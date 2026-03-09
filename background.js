@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     // 打开欢迎页面
     chrome.tabs.create({
-      url: 'https://github.com/prbooster/welcome'
+      url: chrome.runtime.getURL('welcome.html')
     });
   }
 });

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>欢迎使用 PR CodeLens</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+    .features {
+      margin-bottom: 30px;
+    }
+    .feature {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .feature:last-child {
+      border-bottom: none;
+    }
+    .feature-icon {
+      font-size: 24px;
+      margin-right: 12px;
+      width: 32px;
+      text: center;
+    }
+    .feature-text {
+      font-size: 15px;
+      color: #444;
+    }
+    .cta {
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: #999;
+    }
+    .footer a {
+      color: #667eea;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="icon">🔍</div>
+      <h1 class="title">欢迎使用 PR CodeLens</h1>
+      <p class="subtitle">GitHub PR 智能洞察，让代码审查更高效</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <span class="feature-icon">📊</span>
+        <span class="feature-text">PR 列表增强，一目了然</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🎯</span>
+        <span class="feature-text">快速筛选，节省时间</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">📈</span>
+        <span class="feature-text">智能统计，了解趋势</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🤖</span>
+        <span class="feature-text">AI 代码审查（高级功能）</span>
+      </div>
+    </div>
+
+    <div class="cta">
+      <button class="btn" id="goToGithub">前往 GitHub 使用</div>
+
+    <div class="footer">
+      查看 <a href="https://github.com/IAmNobleMan/prbooster" target="_blank">项目文档</a> |
+      <a href="https://github.com/IAmNobleMan/prbooster/blob/main/README.md" target="_blank">使用指南</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('goToGithub').addEventListener('click', () => {
+      chrome.tabs.create({ url: 'https://github.com' });
+    });
+  </script>
+</body>
+</html>
