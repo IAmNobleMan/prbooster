@@ -93,6 +93,9 @@
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
     }
+    .action-btn:active {
+      transform: scale(0.98);
+    }
     .action-btn.secondary {
       background: #f5f5f5;
       color: #333;
@@ -193,7 +196,7 @@
       </div>
       <div class="feature">
         <span class="feature-icon">📈</span>
-        <div class="feature-text"><strong>智能统计</strong> - 本周 PR 数量、合并率实时统计</div>
+        <div class="feature-text"><strong>智能统计</</strong> - 本周 PR 数量、合并率实时统计</div>
       </div>
       <div class="feature">
         <span class="feature-icon">🤖</span>
@@ -220,31 +223,62 @@
   </div>
 
   <script>
-    document.getElementById('goToGithub').addEventListener('click', () => {
-      if (chrome && chrome.tabs) {
-        chrome.tabs.create({ url: 'https://github.com' });
-      } else {
-        window.open('https://github.com', '_blank');
-      }
-    });
+    // 等待DOM加载完成
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initEventListeners);
+    } else {
+      initEventListeners();
+    }
 
-    document.getElementById('viewDocs').addEventListener('click', () => {
-      if (chrome && chrome.tabs) {
-        chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/blob/main/README.md' });
-      } else {
-        window.open('https://github.com/IAmNobleMan/prbooster/blob/main/README.md', '_blank');
-      }
-    });
+    function initEventListeners() {
+      console.log('初始化欢迎页面按钮...');
 
-    document.getElementById('viewGuide').addEventListener('click', showGuide);
+      const goToGithubBtn = document.getElementById('goToGithub');
+      const viewDocsBtn = document.getElementById('viewDocs');
+      const viewGuideBtn = document.getElementById('viewGuide');
+      const feedbackBtn = document.getElementById('feedback');
 
-    document.getElementById('feedback').addEventListener('click', () => {
-      if (chrome && chrome.tabs) {
-        chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/issues' });
-      } else {
-        window.open('https://github.com/IAmNobleMan/prbooster/issues', '_blank');
+      if (!goToGithubBtn || !viewDocsBtn || !viewGuideBtn || !feedbackBtn) {
+        console.error('未找到所有按钮元素');
+        return;
       }
-    });
+
+      goToGithubBtn.addEventListener('click', function() {
+        console.log('点击前往 GitHub');
+        if (chrome && chrome.tabs) {
+          chrome.tabs.create({ url: 'https://github.com' });
+        } else {
+          window.open('https://github.com', '_blank');
+        }
+      });
+
+      viewDocsBtn.addEventListener('click', function() {
+        console.log('点击查看文档');
+        const url = 'https://github.com/IAmNobleMan/prbooster/blob/main/README.md';
+        if (chrome && chrome.tabs) {
+          chrome.tabs.create({ url: url });
+        } else {
+          window.open(url, '_blank');
+        }
+      });
+
+      viewGuideBtn.addEventListener('click', function() {
+        console.log('点击使用指南');
+        showGuide();
+      });
+
+      feedbackBtn.addEventListener('click', function() {
+        console.log('点击反馈建议');
+        const url = 'https://github.com/IAmNobleMan/prbooster/issues';
+        if (chrome && chrome.tabs) {
+          chrome.tabs.create({ url: url });
+        } else {
+          window.open(url, '_blank');
+        }
+      });
+
+      console.log('欢迎页面按钮初始化完成');
+    }
 
     function showGuide() {
       const modal = document.createElement('div');
@@ -253,9 +287,9 @@
         <h2>🎓 快速开始</h2>
         <div class="steps">
           <p><strong>1. 访问 GitHub</strong><br>打开任意仓库的 Pull Requests 页面</p>
-          <p><strong>2. 查看增强功能</strong><br>每个 PR 会显示文件文件数、新增行、删除行</p>
+          <p><strong>2. 查看增强功能</strong><br>每个 PR 会显示文件数、新增行、删除行</p>
           <p><strong>3. 使用统计面板</strong><br>点击插件图标查看本周 PR 统计</p>
-          <p><strong>4. 解锁高级功能</strong><br>升级到高级版，获得 AI 审查等更多功能</p>
+          <p><strong>4. 解锁高级功能</strong><br>升级到高级版，获得获得 AI 审查等更多功能</p>
         </div>
         <button class="close-btn">开始使用</button>
       `;
@@ -263,12 +297,12 @@
       const overlay = document.createElement('div');
       overlay.className = 'guide-overlay';
 
-      modal.querySelector('.close-btn').addEventListener('click', () => {
+      modal.querySelector('.close-btn').addEventListener('click', function() {
         modal.remove();
         overlay.remove();
       });
 
-      overlay.addEventListener('click', () => {
+      overlay.addEventListener('click', function() {
         modal.remove();
         overlay.remove();
       });

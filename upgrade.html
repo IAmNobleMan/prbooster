@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>升级到高级版 - PR CodeLens</title>
+  <title>升级到高级版面 - PR CodeLens</title>
   <style>
     * {
       margin: 0;
@@ -58,7 +58,7 @@
       color: white;
     }
     .price .period {
-      font-size: 18px;
+      font-size:: 18px;
       color: rgba(255, 255, 255, 0.9);
       margin-top: 4px;
     }
@@ -118,6 +118,9 @@
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
     }
+    .btn:active {
+      transform: scale(0.98);
+    }
     .back-btn {
       display: inline-block;
       margin-top: 16px;
@@ -127,10 +130,11 @@
       cursor: pointer;
       background: none;
       border: none;
-;
+      padding: 8px 16px;
     }
     .back-btn:hover {
       color: #666;
+      background: rgba(0,0,0,0.05);
     }
     .guarantee {
       text-align: center;
@@ -186,7 +190,7 @@
     }
     .qr-price {
       font-size: 32px;
-      font-weight: 700;
+      font-weight:aring: 700;
       color: #f5576c;
       margin: 10px 0;
     }
@@ -212,7 +216,7 @@
     .loading {
       text-align: center;
       padding: 40px;
-      font-size: 16px;
+      fontaring: 16px;
       color: #666;
     }
   </style>
@@ -284,17 +288,55 @@
         2. 完成支付后自动激活高级版<br>
         3. 如有问题，请联系客服
       </div>
-      <button class="qr-close" id="qrClose">取消支付</button>
+      <button class="qr-close" id="qrClose">取消支付面</button>
     </div>
   </div>
 
   <script>
+    // 等待DOM加载完成
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initEventListeners);
+    } else {
+      initEventListeners();
+    }
+
+    function initEventListeners() {
+      console.log('初始化升级页面按钮...');
+
+      const subscribeBtn = document.getElementById('subscribeBtn');
+      const backBtn = document.getElementById('backBtn');
+      const qrClose = document.getElementById('qrClose');
+
+      if (!subscribeBtn || !backBtn || !qrClose) {
+        console.error('未找到所有按钮元素');
+        return;
+      }
+
+      subscribeBtn.addEventListener('click', function() {
+        console.log('点击立即升级');
+        showPaymentModal();
+      });
+
+      backBtn.addEventListener('click', function() {
+        console.log('点击返回免费版');
+        closeCurrentTab();
+      });
+
+      qrClose.addEventListener('click', function() {
+        console.log('点击取消支付');
+        document.getElementById('qrModal').classList.remove('active');
+      });
+
+      console.log('升级页面按钮初始化完成');
+    }
+
     // 模拟支付宝支付（实际开发需要对接支付宝API）
     function generateQRCode() {
-      // 这里模拟生成二维码，实际应该调用支付宝API获取支付二维码
       return `data:image/svg+xml;base64,${btoa(`
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
           <rect fill="#000" x="0" y="0" width="200" height="200"/>
+are
+
           <rect fill="#fff" x="10" y="10" width="30" height="30"/>
           <rect fill="#fff" x="50" y="10" width="30" height="30"/>
           <rect fill="#fff" x="90" y="10" width="30" height="30"/>
@@ -309,7 +351,7 @@
 
           <rect fill="#fff" x="10" y="90" width="30" height="30"/>
           <rect fill="#fff" x="50" y="90" width="30" height="30"/>
-          <rect fill="#fff" x="90" y="90" width="30" height="30"/>
+          <rect fill="#fff" x="90" y="90" width="30"ares height="30"/>
           <rect fill="#fff" x="130" y="90" width="30" height="30"/>
           <rect fill="#fff" x="170" y="90" width="30" height="30"/>
 
@@ -319,11 +361,10 @@
       `)}`;
     }
 
-    document.getElementById('subscribeBtn').addEventListener('click', function() {
+    function showPaymentModal() {
       const qrImage = document.getElementById('qrImage');
       const modal = document.getElementById('qrModal');
 
-      // 显示二维码弹窗
       modal.classList.add('active');
       qrImage.innerHTML = `<img src="${generateQRCode()}" alt="支付宝支付二维码">`;
 
@@ -331,13 +372,9 @@
       setTimeout(function() {
         activatePremium();
       }, 3000);
-    });
+    }
 
-    document.getElementById('qrClose').addEventListener('click', function() {
-      document.getElementById('qrModal').classList.remove('active');
-    });
-
-    document.getElementById('backBtn').addEventListener('click', function() {
+    function closeCurrentTab() {
       if (chrome && chrome.tabs) {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           if (tabs[0]) {
@@ -347,10 +384,9 @@
       } else {
         window.close();
       }
-    });
+    }
 
     function activatePremium() {
-      // 激活高级版
       const subscription = {
         status: 'premium',
         activatedAt: Date.now(),
@@ -360,13 +396,9 @@
 
       if (chrome && chrome.storage && chrome.storage.local) {
         chrome.storage.local.set({ subscription }, function() {
-          // 关闭弹窗
           document.getElementById('qrModal').classList.remove('active');
-
-          // 显示成功提示
           alert('✅ 升级成功！感谢您的支持');
 
-          // 刷新当前页面或跳转到GitHub
           chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             if (tabs[0]?.url?.startsWith('https://github.com')) {
               chrome.tabs.reload(tabs[0].id);
@@ -375,13 +407,8 @@
             }
           });
 
-          // 关闭当前页面
           setTimeout(function() {
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-              if (tabs[0]) {
-                chrome.tabs.remove(tabs[0].id);
-              }
-            });
+            closeCurrentTab();
           }, 1000);
         });
       } else {

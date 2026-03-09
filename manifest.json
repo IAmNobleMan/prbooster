@@ -3,6 +3,11 @@
   "name": "PR CodeLens - GitHub PR 智能洞察",
   "version": "1.0.0",
   "description": "GitHub PR 智能审查与洞察工具，自动代码审查 + 可视化统计",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "permissions": [
     "activeTab",
     "storage",
