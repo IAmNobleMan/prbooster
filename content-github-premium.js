@@ -98,7 +98,7 @@ function showUpgradePrompt() {
   promptDiv.innerHTML = `
     <h3 style="margin: 0 0 12px 0;">🔓 解锁AI智能审查</h3>
     <p style="margin: 0 0 16px 0;">AI审查是高级会员专属功能。<br>只需 ¥9/月，让代码审查更高效。</p>
-    <button onclick="chrome.tabs.create({url: 'https://github.com/prbooster/upgrade'}); document.querySelector('.pr-booster-prompt').remove();" class="btn btn-primary" style="margin-right: 8px;">立即升级</button>
+    <button onclick="chrome.tabs.create({url: chrome.runtime.getURL('upgrade.html')}); document.querySelector('.pr-booster-prompt').remove();" class="btn btn-primary" style="margin-right: 8px;">立即升级</button>
     <button onclick="document.querySelector('.pr-booster-prompt').remove();" class="btn">暂不</button>
   `;
   promptDiv.className = 'pr-booster-prompt';
@@ -143,7 +143,7 @@ async function loadTeamStats(panel) {
       panel.innerHTML = `
         <h4>📊 团队协作统计</h4>
         <p class="text-small text-gray-500">高级会员功能</p>
-        <button onclick="chrome.tabs.create({url: 'https://github.com/prbooster/upgrade'});" class="btn btn-sm btn-link">查看详情 →</button>
+        <button onclick="chrome.tabs.create({url: chrome.runtime.getURL('upgrade.html')});" class="btn btn-sm btn-link">查看详情 →</button>
       `;
       return;
     }

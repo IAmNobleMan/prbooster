@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>升级到高级版 - PR CodeLens</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .icon {
+      font-size: 72px;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+    .price {
+      text-align: center;
+      margin-bottom: 32px;
+      padding: 24px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      border-radius: 12px;
+    }
+    .price .amount {
+      font-size: 48px;
+      font-weight: 700;
+      color: white;
+    }
+    .price .period {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+    }
+    .price .saving {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 8px;
+    }
+    .features {
+      margin-bottom: 32px;
+    }
+    .feature {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .feature:last-child {
+      border-bottom: none;
+    }
+    .feature-icon {
+      font-size: 24px;
+      margin-right: 12px;
+      width: 32px;
+      text-align: center;
+    }
+    .feature-text {
+      font-size: 15px;
+      color: #444;
+    }
+    .premium-tag {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+    }
+    .cta {
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      width: 100%;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 16px;
+      color: #999;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .back-btn:hover {
+      color: #666;
+    }
+    .guarantee {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="icon">🚀</div>
+      <h1 class="title">解锁高级功能</h1>
+      <p class="subtitle">让代码审查事半功倍</p>
+    </div>
+
+    <div class="price">
+      <div class="amount">¥9</div>
+      <div class="period">每月订阅</div>
+      <div class="saving">✨ 30天免费试用，随时取消</div>
+    </div>
+
+    <div class="features">
+      <div class="="feature">
+        <span class="feature-icon">🤖</span>
+        <span class="feature-text">AI 智能代码审查</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">⚡</span>
+        <span class="feature-text">批量操作（打标签、评论）</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">📊</span>
+        <span class="feature-text">团队协作统计</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">📝</span>
+        <span class="feature-text">PR 模板管理 <span class="premium-tag">Pro</span></span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🎯</span>
+        <span class="feature-text">高级筛选功能</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">💬</span>
+        <span class="feature-text">智能评论建议</span>
+      </div>
+    </div>
+
+    <div class="cta">
+      <button class="btn" id="subscribeBtn">立即升级 →</button>
+    </div>
+
+    <div style="text-align: center;">
+      <a class="back-btn" id="backBtn">← 返回免费版</a>
+    </div>
+
+    <div class="guarantee">
+      🔒 安全支付 · 7天退款保证
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('subscribeBtn').addEventListener('click', () => {
+      // 发送消息到background.js处理订阅
+      chrome.runtime.sendMessage({ action: 'subscribe' }, (response) => {
+        if (response?.success) {
+          alert('✅ 升级成功！感谢您的支持');
+          // 刷新当前页面或跳转到GitHub
+          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs[0]?.url?.startsWith('https://github.com')) {
+              chrome.tabs.reload(tabs[0].id);
+            } else {
+              chrome.tabs.create({ url: 'https://github.com' });
+            }
+          });
+        } else {
+          alert('订阅功能暂未开放，敬请期待！');
+        }
+      });
+    });
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.close();
+    });
+  </script>
+</bodyaring>
+</html>

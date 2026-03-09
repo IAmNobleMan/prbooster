@@ -1,7 +1,7 @@
 // 绑定升级按钮事件
 document.getElementById('upgradeBtn').addEventListener('click', () => {
   chrome.tabs.create({
-    url: 'https://github.com/prbooster/upgrade'
+    url: chrome.runtime.getURL('upgrade.html')
   });
 });
 
