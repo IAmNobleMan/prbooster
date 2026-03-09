@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "PR CodeLens - GitHub PR 智能洞察",
+  "version": "1.0.0",
+  "description": "GitHub PR 智能审查与洞察工具，自动代码审查 + 可视化统计",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "identity",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://github.com/*",
+    "https://api.github.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content-github.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

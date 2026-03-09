@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PR CodeLens</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .header .subtitle {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-card .number {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .stat-card .label {
+      font-size: 11px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    .status-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    .status-badge.premium {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    .action-btn {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      color: #667eea;
+      border: none;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .action-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🔍 PR CodeLens</h1>
+    <div class="subtitle">GitHub PR 智能洞察</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="number" id="prCount">-</div>
+      <div class="label">本周 PR</div>
+    </div>
+    <div class="stat-card">
+      <div class="number" id="mergeRate">-</div>
+      <div class="label">合并率</div>
+    </div>
+  </div>
+
+  <div class="status-badge" id="statusBadge">
+    免费版用户
+  </div>
+
+  <button class="action-btn" id="upgradeBtn">
+    🔓 解锁高级功能
+  </button>
+
+  <div class="footer">
+    深度洞察，高效审查
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

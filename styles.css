@@ -1,0 +1,64 @@
+/* PR Booster 自定义样式 */
+
+.pr-booster-stats {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(88, 166, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px !important;
+  font-weight: 500;
+}
+
+.pr-booster-stats .octicon {
+  margin-right: 4px;
+}
+
+/* PR 列表增强样式 */
+.js-issue-row {
+  transition: background-color 0.2s;
+}
+
+.js-issue-row:hover {
+  background-color: rgba(88, 166, 255, 0.05);
+}
+
+/* 付费功能标识 */
+.pr-booster-premium-badge {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* AI 审查建议样式 */
+.pr-booster-ai-review {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-left: 4px solid #764ba2;
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 4px;
+  color: white;
+}
+
+.pr-booster-ai-review h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.pr-booster-ai-review h4::before {
+  content: '🤖';
+  margin-right: 8px;
+}
+
+.pr-booster-ai-review p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.95;
+}
