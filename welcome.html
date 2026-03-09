@@ -126,6 +126,52 @@
     .tips strong {
       color: #667eea;
     }
+    /* 弹窗样式 */
+    .guide-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+      max-width: 500px;
+      width: 90%;
+      z-index: 10000;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .guide-modal h2 {
+      margin: 0 0 20px 0;
+      font-size: 24px;
+    }
+    .guide-modal .steps {
+      line-height: 1.8;
+      color: #444;
+    }
+    .guide-modal .steps p {
+      margin: 0 0 12px 0;
+    }
+    .guide-modal .close-btn {
+      margin-top: 20px;
+      padding: 10px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .guide-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
@@ -175,38 +221,60 @@
 
   <script>
     document.getElementById('goToGithub').addEventListener('click', () => {
-      chrome.tabs.create({ url: 'https://github.com' });
+      if (chrome && chrome.tabs) {
+        chrome.tabs.create({ url: 'https://github.com' });
+      } else {
+        window.open('https://github.com', '_blank');
+      }
     });
 
     document.getElementById('viewDocs').addEventListener('click', () => {
-      chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/blob/main/README.md' });
+      if (chrome && chrome.tabs) {
+        chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/blob/main/README.md' });
+      } else {
+        window.open('https://github.com/IAmNobleMan/prbooster/blob/main/README.md', '_blank');
+      }
     });
 
-    document.getElementById('viewGuide').addEventListener('click', () => {
-      showGuide();
-    });
+    document.getElementById('viewGuide').addEventListener('click', showGuide);
 
     document.getElementById('feedback').addEventListener('click', () => {
-      chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/issues' });
+      if (chrome && chrome.tabs) {
+        chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/issues' });
+      } else {
+        window.open('https://github.com/IAmNobleMan/prbooster/issues', '_blank');
+      }
     });
 
     function showGuide() {
-      const guideHTML = `
-        <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 16px; box-shadow: 0 20px 80px rgba(0,0,0,0.4); max-width: 500px; z-index: 10000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <h2 style="margin: 0 0 20px 0; font-size: 24px;">🎓 快速开始</h2>
-          <div style="line-height: 1.8; color: #444;">
-            <p><strong>1. 访问 GitHub</strong><br>打开任意仓库的 Pull Requests 页面</p>
-            <p><strong>2. 查看增强功能</strong><br>每个 PR 会显示文件数、新增行、删除行</p>
-            <p><strong>3. 使用统计面板</strong><br>点击插件图标查看本周 PR 统计</p>
-            <p><strong>4. 解锁高级功能</strong><br>升级到高级版，获得 AI 审查等更多功能</p>
-          </div>
-          <button onclick="document.querySelector('.guide-overlay').remove();" style="margin-top: 20px; padding: 10px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">开始使用</button>
+      const modal = document.createElement('div');
+      modal.className = 'guide-modal';
+      modal.innerHTML = `
+        <h2>🎓 快速开始</h2>
+        <div class="steps">
+          <p><strong>1. 访问 GitHub</strong><br>打开任意仓库的 Pull Requests 页面</p>
+          <p><strong>2. 查看增强功能</strong><br>每个 PR 会显示文件文件数、新增行、删除行</p>
+          <p><strong>3. 使用统计面板</strong><br>点击插件图标查看本周 PR 统计</p>
+          <p><strong>4. 解锁高级功能</strong><br>升级到高级版，获得 AI 审查等更多功能</p>
         </div>
-        <div class="guide-overlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999;" onclick="this.remove();"></div>
+        <button class="close-btn">开始使用</button>
       `;
-      const div = {innerHTML: guideHTML, ...document.createElement('div')};
-      Object.assign(div, {innerHTML: guideHTML});
-      document.body.appendChild(div);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'guide-overlay';
+
+      modal.querySelector('.close-btn').addEventListener('click', () => {
+        modal.remove();
+        overlay.remove();
+      });
+
+      overlay.addEventListener('click', () => {
+        modal.remove();
+        overlay.remove();
+      });
+
+      document.body.appendChild(overlay);
+      document.body.appendChild(modal);
     }
   </script>
 </body>

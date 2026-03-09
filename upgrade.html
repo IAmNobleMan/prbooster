@@ -125,6 +125,9 @@
       text-decoration: none;
       font-size: 14px;
       cursor: pointer;
+      background: none;
+      border: none;
+;
     }
     .back-btn:hover {
       color: #666;
@@ -260,7 +263,7 @@
     </div>
 
     <div style="text-align: center;">
-      <a class="back-btn" id="backBtn">← 返回免费版</a>
+      <button class="back-btn" id="backBtn">← 返回免费版</button>
     </div>
 
     <div class="guarantee">
@@ -292,8 +295,6 @@
       return `data:image/svg+xml;base64,${btoa(`
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
           <rect fill="#000" x="0" y="0" width="200" height="200"/>
-         arez
-
           <rect fill="#fff" x="10" y="10" width="30" height="30"/>
           <rect fill="#fff" x="50" y="10" width="30" height="30"/>
           <rect fill="#fff" x="90" y="10" width="30" height="30"/>
@@ -318,7 +319,7 @@
       `)}`;
     }
 
-    document.getElementById('subscribeBtn').addEventListener('click', () => {
+    document.getElementById('subscribeBtn').addEventListener('click', function() {
       const qrImage = document.getElementById('qrImage');
       const modal = document.getElementById('qrModal');
 
@@ -327,17 +328,25 @@
       qrImage.innerHTML = `<img src="${generateQRCode()}" alt="支付宝支付二维码">`;
 
       // 模拟支付成功（实际需要轮询后端API）
-      setTimeout(() => {
+      setTimeout(function() {
         activatePremium();
       }, 3000);
     });
 
-    document.getElementById('qrClose').addEventListener('click', () => {
+    document.getElementById('qrClose').addEventListener('click', function() {
       document.getElementById('qrModal').classList.remove('active');
     });
 
-    document.getElementById('backBtn').addEventListener('click', () => {
-      window.close();
+    document.getElementById('backBtn').addEventListener('click', function() {
+      if (chrome && chrome.tabs) {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          if (tabs[0]) {
+            chrome.tabs.remove(tabs[0].id);
+          }
+        });
+      } else {
+        window.close();
+      }
     });
 
     function activatePremium() {
@@ -349,27 +358,36 @@
         plan: 'monthly'
       };
 
-      chrome.storage.local.set({ subscription }, () => {
-        // 关闭弹窗
-        document.getElementById('qrModal').classList.remove('active');
+      if (chrome && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ subscription }, function() {
+          // 关闭弹窗
+          document.getElementById('qrModal').classList.remove('active');
 
-        // 显示成功提示
-        alert('✅ 升级成功！感谢您的支持');
+          // 显示成功提示
+          alert('✅ 升级成功！感谢您的支持');
 
-        // 刷新当前页面或跳转到GitHub
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs[0]?.url?.startsWith('https://github.com')) {
-            chrome.tabs.reload(tabs[0].id);
-          } else {
-            chrome.tabs.create({ url: 'https://github.com' });
-          }
+          // 刷新当前页面或跳转到GitHub
+          chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            if (tabs[0]?.url?.startsWith('https://github.com')) {
+              chrome.tabs.reload(tabs[0].id);
+            } else {
+              chrome.tabs.create({ url: 'https://github.com' });
+            }
+          });
+
+          // 关闭当前页面
+          setTimeout(function() {
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+              if (tabs[0]) {
+                chrome.tabs.remove(tabs[0].id);
+              }
+            });
+          }, 1000);
         });
-
-        // 关闭当前页面
-        setTimeout(() => {
-          window.close();
-        }, 1000);
-      });
+      } else {
+        alert('✅ 升级成功！（演示模式）');
+        window.close();
+      }
     }
   </script>
 </body>
