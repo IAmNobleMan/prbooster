@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>升级到高级版面 - PR CodeLens</title>
+  <title>升级到高级版 - PR CodeLens</title>
   <style>
     * {
       margin: 0;
@@ -58,7 +58,7 @@
       color: white;
     }
     .price .period {
-      font-size:: 18px;
+      font-size: 18px;
       color: rgba(255, 255, 255, 0.9);
       margin-top: 4px;
     }
@@ -143,7 +143,6 @@
       color: #999;
     }
 
-    /* 支付宝二维码弹窗 */
     .qr-modal {
       display: none;
       position: fixed;
@@ -190,7 +189,7 @@
     }
     .qr-price {
       font-size: 32px;
-      font-weight:aring: 700;
+      font-weight: 700;
       color: #f5576c;
       margin: 10px 0;
     }
@@ -213,18 +212,12 @@
     .qr-close:hover {
       background: #e8e8e8;
     }
-    .loading {
-      text-align: center;
-      padding: 40px;
-      fontaring: 16px;
-      color: #666;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <div class="icon">🚀</div>
+      <div class="icon">🚀 fancypants</div>
       <h1 class="title">解锁高级功能</h1>
       <p class="subtitle">让代码审查事半功倍</p>
     </div>
@@ -271,151 +264,26 @@
     </div>
 
     <div class="guarantee">
-      🔒 安全支付 · 7天退款保证
+      🔒 安全支付 ·面 7天退款保证
     </div>
   </div>
 
-  <!-- 支付宝二维码弹窗 -->
   <div class="qr-modal" id="qrModal">
     <div class="qr-content">
       <div class="qr-title">🔐 支付宝扫码支付</div>
       <div class="qr-price">¥9.00</div>
       <div class="qr-image" id="qrImage">
-        <div class="loading">加载中...</div>
+        <div style="text-align: center; padding: 40px; font-size: 16px; color: #666;">加载中...</div>
       </div>
       <div class="qr-tips">
         1. 打开支付宝，扫一扫上方二维码<br>
         2. 完成支付后自动激活高级版<br>
         3. 如有问题，请联系客服
       </div>
-      <button class="qr-close" id="qrClose">取消支付面</button>
+      <button class="qr-close" id="qrClose">取消支付</button>
     </div>
   </div>
 
-  <script>
-    // 等待DOM加载完成
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initEventListeners);
-    } else {
-      initEventListeners();
-    }
-
-    function initEventListeners() {
-      console.log('初始化升级页面按钮...');
-
-      const subscribeBtn = document.getElementById('subscribeBtn');
-      const backBtn = document.getElementById('backBtn');
-      const qrClose = document.getElementById('qrClose');
-
-      if (!subscribeBtn || !backBtn || !qrClose) {
-        console.error('未找到所有按钮元素');
-        return;
-      }
-
-      subscribeBtn.addEventListener('click', function() {
-        console.log('点击立即升级');
-        showPaymentModal();
-      });
-
-      backBtn.addEventListener('click', function() {
-        console.log('点击返回免费版');
-        closeCurrentTab();
-      });
-
-      qrClose.addEventListener('click', function() {
-        console.log('点击取消支付');
-        document.getElementById('qrModal').classList.remove('active');
-      });
-
-      console.log('升级页面按钮初始化完成');
-    }
-
-    // 模拟支付宝支付（实际开发需要对接支付宝API）
-    function generateQRCode() {
-      return `data:image/svg+xml;base64,${btoa(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-          <rect fill="#000" x="0" y="0" width="200" height="200"/>
-are
-
-          <rect fill="#fff" x="10" y="10" width="30" height="30"/>
-          <rect fill="#fff" x="50" y="10" width="30" height="30"/>
-          <rect fill="#fff" x="90" y="10" width="30" height="30"/>
-          <rect fill="#fff" x="130" y="10" width="30" height="30"/>
-          <rect fill="#fff" x="170" y="10" width="30" height="30"/>
-
-          <rect fill="#fff" x="10" y="50" width="30" height="30"/>
-          <rect fill="#fff" x="50" y="50" width="30" height="30"/>
-          <rect fill="#fff" x="90" y="50" width="30" height="30"/>
-          <rect fill="#fff" x="130" y="50" width="30" height="30"/>
-          <rect fill="#fff" x="170" y="50" width="30" height="30"/>
-
-          <rect fill="#fff" x="10" y="90" width="30" height="30"/>
-          <rect fill="#fff" x="50" y="90" width="30" height="30"/>
-          <rect fill="#fff" x="90" y="90" width="30"ares height="30"/>
-          <rect fill="#fff" x="130" y="90" width="30" height="30"/>
-          <rect fill="#fff" x="170" y="90" width="30" height="30"/>
-
-          <text x="100" y="140" text-anchor="middle" fill="#fff" font-size="20">支付宝支付</text>
-          <text x="100" y="170" text-anchor="middle" fill="#fff" font-size="14">¥9.00</text>
-        </svg>
-      `)}`;
-    }
-
-    function showPaymentModal() {
-      const qrImage = document.getElementById('qrImage');
-      const modal = document.getElementById('qrModal');
-
-      modal.classList.add('active');
-      qrImage.innerHTML = `<img src="${generateQRCode()}" alt="支付宝支付二维码">`;
-
-      // 模拟支付成功（实际需要轮询后端API）
-      setTimeout(function() {
-        activatePremium();
-      }, 3000);
-    }
-
-    function closeCurrentTab() {
-      if (chrome && chrome.tabs) {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-          if (tabs[0]) {
-            chrome.tabs.remove(tabs[0].id);
-          }
-        });
-      } else {
-        window.close();
-      }
-    }
-
-    function activatePremium() {
-      const subscription = {
-        status: 'premium',
-        activatedAt: Date.now(),
-        expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30天
-        plan: 'monthly'
-      };
-
-      if (chrome && chrome.storage && chrome.storage.local) {
-        chrome.storage.local.set({ subscription }, function() {
-          document.getElementById('qrModal').classList.remove('active');
-          alert('✅ 升级成功！感谢您的支持');
-
-          chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            if (tabs[0]?.url?.startsWith('https://github.com')) {
-              chrome.tabs.reload(tabs[0].id);
-            } else {
-              chrome.tabs.create({ url: 'https://github.com' });
-            }
-          });
-
-          setTimeout(function() {
-            closeCurrentTab();
-          }, 1000);
-        });
-      } else {
-        alert('✅ 升级成功！（演示模式）');
-        window.close();
-      }
-    }
-  </script>
+  <script src="upgrade.js"></script>
 </body>
 </html>
