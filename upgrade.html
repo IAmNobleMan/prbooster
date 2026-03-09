@@ -135,6 +135,83 @@
       font-size: 13px;
       color: #999;
     }
+
+    /* 支付宝二维码弹窗 */
+    .qr-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+    .qr-modal.active {
+      display: flex;
+    }
+    .qr-content {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .qr-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #333;
+    }
+    .qr-image {
+      width: 200px;
+      height: 200px;
+      margin: 20px auto;
+      background: #f5f5f5;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qr-image img {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+    }
+    .qr-price {
+      font-size: 32px;
+      font-weight: 700;
+      color: #f5576c;
+      margin: 10px 0;
+    }
+    .qr-tips {
+      font-size: 14px;
+      color: #666;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+    .qr-close {
+      margin-top: 24px;
+      padding: 10px 30px;
+      background: #f5f5f5;
+      color: #666;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .qr-close:hover {
+      background: #e8e8e8;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 16px;
+      color: #666;
+    }
   </style>
 </head>
 <body>
@@ -152,7 +229,7 @@
     </div>
 
     <div class="features">
-      <div class="="feature">
+      <div class="feature">
         <span class="feature-icon">🤖</span>
         <span class="feature-text">AI 智能代码审查</span>
       </div>
@@ -191,29 +268,109 @@
     </div>
   </div>
 
+  <!-- 支付宝二维码弹窗 -->
+  <div class="qr-modal" id="qrModal">
+    <div class="qr-content">
+      <div class="qr-title">🔐 支付宝扫码支付</div>
+      <div class="qr-price">¥9.00</div>
+      <div class="qr-image" id="qrImage">
+        <div class="loading">加载中...</div>
+      </div>
+      <div class="qr-tips">
+        1. 打开支付宝，扫一扫上方二维码<br>
+        2. 完成支付后自动激活高级版<br>
+        3. 如有问题，请联系客服
+      </div>
+      <button class="qr-close" id="qrClose">取消支付</button>
+    </div>
+  </div>
+
   <script>
+    // 模拟支付宝支付（实际开发需要对接支付宝API）
+    function generateQRCode() {
+      // 这里模拟生成二维码，实际应该调用支付宝API获取支付二维码
+      return `data:image/svg+xml;base64,${btoa(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+          <rect fill="#000" x="0" y="0" width="200" height="200"/>
+         arez
+
+          <rect fill="#fff" x="10" y="10" width="30" height="30"/>
+          <rect fill="#fff" x="50" y="10" width="30" height="30"/>
+          <rect fill="#fff" x="90" y="10" width="30" height="30"/>
+          <rect fill="#fff" x="130" y="10" width="30" height="30"/>
+          <rect fill="#fff" x="170" y="10" width="30" height="30"/>
+
+          <rect fill="#fff" x="10" y="50" width="30" height="30"/>
+          <rect fill="#fff" x="50" y="50" width="30" height="30"/>
+          <rect fill="#fff" x="90" y="50" width="30" height="30"/>
+          <rect fill="#fff" x="130" y="50" width="30" height="30"/>
+          <rect fill="#fff" x="170" y="50" width="30" height="30"/>
+
+          <rect fill="#fff" x="10" y="90" width="30" height="30"/>
+          <rect fill="#fff" x="50" y="90" width="30" height="30"/>
+          <rect fill="#fff" x="90" y="90" width="30" height="30"/>
+          <rect fill="#fff" x="130" y="90" width="30" height="30"/>
+          <rect fill="#fff" x="170" y="90" width="30" height="30"/>
+
+          <text x="100" y="140" text-anchor="middle" fill="#fff" font-size="20">支付宝支付</text>
+          <text x="100" y="170" text-anchor="middle" fill="#fff" font-size="14">¥9.00</text>
+        </svg>
+      `)}`;
+    }
+
     document.getElementById('subscribeBtn').addEventListener('click', () => {
-      // 发送消息到background.js处理订阅
-      chrome.runtime.sendMessage({ action: 'subscribe' }, (response) => {
-        if (response?.success) {
-          alert('✅ 升级成功！感谢您的支持');
-          // 刷新当前页面或跳转到GitHub
-          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs[0]?.url?.startsWith('https://github.com')) {
-              chrome.tabs.reload(tabs[0].id);
-            } else {
-              chrome.tabs.create({ url: 'https://github.com' });
-            }
-          });
-        } else {
-          alert('订阅功能暂未开放，敬请期待！');
-        }
-      });
+      const qrImage = document.getElementById('qrImage');
+      const modal = document.getElementById('qrModal');
+
+      // 显示二维码弹窗
+      modal.classList.add('active');
+      qrImage.innerHTML = `<img src="${generateQRCode()}" alt="支付宝支付二维码">`;
+
+      // 模拟支付成功（实际需要轮询后端API）
+      setTimeout(() => {
+        activatePremium();
+      }, 3000);
+    });
+
+    document.getElementById('qrClose').addEventListener('click', () => {
+      document.getElementById('qrModal').classList.remove('active');
     });
 
     document.getElementById('backBtn').addEventListener('click', () => {
       window.close();
     });
+
+    function activatePremium() {
+      // 激活高级版
+      const subscription = {
+        status: 'premium',
+        activatedAt: Date.now(),
+        expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30天
+        plan: 'monthly'
+      };
+
+      chrome.storage.local.set({ subscription }, () => {
+        // 关闭弹窗
+        document.getElementById('qrModal').classList.remove('active');
+
+        // 显示成功提示
+        alert('✅ 升级成功！感谢您的支持');
+
+        // 刷新当前页面或跳转到GitHub
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs[0]?.url?.startsWith('https://github.com')) {
+            chrome.tabs.reload(tabs[0].id);
+          } else {
+            chrome.tabs.create({ url: 'https://github.com' });
+          }
+        });
+
+        // 关闭当前页面
+        setTimeout(() => {
+          window.close();
+        }, 1000);
+      });
+    }
   </script>
-</bodyaring>
+</body>
 </html>

@@ -18,12 +18,13 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      color: #333;
     }
     .container {
       background: white;
       border-radius: 20px;
       padding: 40px;
-      max-width: 500px;
+      max-width: 600px;
       width: 100%;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
@@ -38,7 +39,6 @@
     .title {
       font-size: 28px;
       font-weight: 700;
-      color: #333;
       margin-bottom: 8px;
     }
     .subtitle {
@@ -50,7 +50,7 @@
     }
     .feature {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       padding: 12px 0;
       border-bottom: 1px solid #f0f0f0;
     }
@@ -61,31 +61,44 @@
       font-size: 24px;
       margin-right: 12px;
       width: 32px;
-      text: center;
+      text-align: center;
     }
     .feature-text {
       font-size: 15px;
       color: #444;
     }
-    .cta {
-      text-align: center;
+    .feature-text strong {
+      color: #333;
     }
-    .btn {
-      display: inline-block;
-      padding: 14px 32px;
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .action-btn {
+      padding: 12px 20px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      border-radius: 50px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
       text-decoration: none;
     }
-    .btn:hover {
+    .action-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    }
+    .action-btn.secondary {
+      background: #f5f5f5;
+      color: #333;
+    }
+    .action-btn.secondary:hover {
+      background: #e8e8e8;
     }
     .footer {
       text-align: center;
@@ -96,6 +109,22 @@
     .footer a {
       color: #667eea;
       text-decoration: none;
+      margin: 0 8px;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .tips {
+      background: #f0f7ff;
+      border-left: 4px solid #667eea;
+      padding: 12px 16px;
+      margin-top: 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #444;
+    }
+    .tips strong {
+      color: #667eea;
     }
   </style>
 </head>
@@ -110,28 +139,37 @@
     <div class="features">
       <div class="feature">
         <span class="feature-icon">📊</span>
-        <span class="feature-text">PR 列表增强，一目了然</span>
+        <div class="feature-text"><strong>PR 列表增强</strong> - 一目了然查看文件数和代码行数</div>
       </div>
       <div class="feature">
         <span class="feature-icon">🎯</span>
-        <span class="feature-text">快速筛选，节省时间</span>
+        <div class="feature-text"><strong>快速筛选</strong> - 按作者、状态、标签快速定位 PR</div>
       </div>
       <div class="feature">
         <span class="feature-icon">📈</span>
-        <span class="feature-text">智能统计，了解趋势</span>
+        <div class="feature-text"><strong>智能统计</strong> - 本周 PR 数量、合并率实时统计</div>
       </div>
       <div class="feature">
         <span class="feature-icon">🤖</span>
-        <span class="feature-text">AI 代码审查（高级功能）</span>
+        <div class="feature-text"><strong>AI 代码审查</strong> - 高级会员专属，智能分析代码质量</div>
       </div>
     </div>
 
-    <div class="cta">
-      <button class="btn" id="goToGithub">前往 GitHub 使用</div>
+    <div class="quick-actions">
+      <button class="action-btn" id="goToGithub">🚀 前往 GitHub</button>
+      <button class="action-btn" id="viewDocs">📚 查看文档</button>
+      <button class="action-btn" id="viewGuide">🎓 使用指南</button>
+      <button class="action-btn secondary" id="feedback">💬 反馈建议</button>
+    </div>
+
+    <div class="tips">
+      <strong>💡 提示：</strong> 打开任意 GitHub 仓库的 PR 列表，即可看到增强功能！
+    </div>
 
     <div class="footer">
-      查看 <a href="https://github.com/IAmNobleMan/prbooster" target="_blank">项目文档</a> |
-      <a href="https://github.com/IAmNobleMan/prbooster/blob/main/README.md" target="_blank">使用指南</a>
+      <a href="https://github.com/IAmNobleMan/prbooster" target="_blank">项目地址</a> |
+      <a href="https://github.com/IAmNobleMan/prbooster/blob/main/README.md" target="_blank">使用文档</a> |
+      <a href="https://github.com/IAmNobleMan/prbooster/issues" target="_blank">问题反馈</a>
     </div>
   </div>
 
@@ -139,6 +177,37 @@
     document.getElementById('goToGithub').addEventListener('click', () => {
       chrome.tabs.create({ url: 'https://github.com' });
     });
+
+    document.getElementById('viewDocs').addEventListener('click', () => {
+      chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/blob/main/README.md' });
+    });
+
+    document.getElementById('viewGuide').addEventListener('click', () => {
+      showGuide();
+    });
+
+    document.getElementById('feedback').addEventListener('click', () => {
+      chrome.tabs.create({ url: 'https://github.com/IAmNobleMan/prbooster/issues' });
+    });
+
+    function showGuide() {
+      const guideHTML = `
+        <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 16px; box-shadow: 0 20px 80px rgba(0,0,0,0.4); max-width: 500px; z-index: 10000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <h2 style="margin: 0 0 20px 0; font-size: 24px;">🎓 快速开始</h2>
+          <div style="line-height: 1.8; color: #444;">
+            <p><strong>1. 访问 GitHub</strong><br>打开任意仓库的 Pull Requests 页面</p>
+            <p><strong>2. 查看增强功能</strong><br>每个 PR 会显示文件数、新增行、删除行</p>
+            <p><strong>3. 使用统计面板</strong><br>点击插件图标查看本周 PR 统计</p>
+            <p><strong>4. 解锁高级功能</strong><br>升级到高级版，获得 AI 审查等更多功能</p>
+          </div>
+          <button onclick="document.querySelector('.guide-overlay').remove();" style="margin-top: 20px; padding: 10px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">开始使用</button>
+        </div>
+        <div class="guide-overlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999;" onclick="this.remove();"></div>
+      `;
+      const div = {innerHTML: guideHTML, ...document.createElement('div')};
+      Object.assign(div, {innerHTML: guideHTML});
+      document.body.appendChild(div);
+    }
   </script>
 </body>
 </html>

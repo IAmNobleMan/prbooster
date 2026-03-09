@@ -22,6 +22,12 @@
       "js": ["content-github.js"],
       "css": ["styles.css"],
       "run_at": "document_end"
+    },
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content-github-premium.js"],
+      "run_at": "document_end",
+      "type": "module"
     }
   ],
   "background": {
